@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce AI - Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav>
+        <a href="index.html" class="logo">E-Comm AI</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="recommend.html">For You</a>
+            <a href="trending.html">Trending</a>
+
+        </div>
+    </nav>
+
+    <main>
+        <h1>Analytics Dashboard</h1>
+        <p style="margin-bottom: 2rem; color: var(--text-secondary);">Real-time performance metrics for the recommendation engine.</p>
+        
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="metric-value" id="total-users">--</div>
+                <div class="metric-label">Total Users</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="total-revenue">--</div>
+                <div class="metric-label">Total Revenue</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="avg-ctr">--</div>
+                <div class="metric-label">Avg CTR</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value" id="conversion">--</div>
+                <div class="metric-label">Conversion Rate</div>
+            </div>
+        </div>
+        
+        <div style="background: var(--surface-color); padding: 2rem; border-radius: 1rem; border: 1px solid rgba(255, 255, 255, 0.05); text-align: center;">
+            <h2 style="margin-bottom: 1rem;">A/B Test Results</h2>
+            <p style="color: var(--text-secondary); margin-bottom: 1rem;">Model A (Popularity) vs Model B (Hybrid Collaborative)</p>
+            <div style="display: flex; justify-content: space-around; max-width: 600px; margin: 0 auto; margin-top: 2rem;">
+                <div>
+                    <h3 style="color: var(--danger-color); font-size: 1.5rem;">Model A</h3>
+                    <p>Conversion: 1.05%</p>
+                </div>
+                <div>
+                    <h3 style="color: var(--success-color); font-size: 1.5rem;">Model B</h3>
+                    <p>Conversion: 1.45% 🏆</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
