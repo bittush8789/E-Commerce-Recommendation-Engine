@@ -1,0 +1,12 @@
+apiVersion: serving.kserve.io/v1beta1
+kind: InferenceService
+metadata:
+  name: ecommerce-recommender
+  namespace: ml-serving
+spec:
+  predictor:
+    model:
+      modelFormat:
+        name: sklearn
+      storageUri: s3://my-bucket/models/model-latest.pkl
+    serviceAccountName: s3-read-sa

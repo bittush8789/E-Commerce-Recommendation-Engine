@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce ML Intelligence</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/lucide@latest"></script>
+</head>
+<body>
+    <div class="glass-container">
+        <header>
+            <div class="logo">
+                <i data-lucide="shopping-cart"></i>
+                <h1>SHOP<span>AI</span></h1>
+            </div>
+            <div class="user-profile">
+                <input type="number" id="userId" placeholder="Enter User ID (e.g. 101)" value="101">
+                <button onclick="getRecommendations()">Update Feed</button>
+            </div>
+        </header>
+
+        <main>
+            <section class="hero">
+                <h2>Next-Gen <span>Personalization</span></h2>
+                <p>Advanced MLOps-driven product recommendations for elite shopping experiences.</p>
+            </section>
+
+            <section class="stats-row">
+                <div class="stat-card">
+                    <span class="label">Total Products</span>
+                    <span class="value">1,000+</span>
+                </div>
+                <div class="stat-card">
+                    <span class="label">System Health</span>
+                    <span class="value health-ok">ONLINE</span>
+                </div>
+                <div class="stat-card">
+                    <span class="label">Inference Time</span>
+                    <span class="value">12ms</span>
+                </div>
+            </section>
+
+            <section class="recommendations">
+                <h3><i data-lucide="sparkles"></i> For You</h3>
+                <div id="recGrid" class="product-grid">
+                    <!-- Dynamic Content -->
+                </div>
+            </section>
+
+            <section class="trending">
+                <h3><i data-lucide="trending-up"></i> Trending Now</h3>
+                <div id="trendGrid" class="product-grid">
+                    <!-- Dynamic Content -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+</html>

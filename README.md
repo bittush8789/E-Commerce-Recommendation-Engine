@@ -1,220 +1,120 @@
-# 🛒 E-Commerce Recommendation Engine
+# 🛒 E-Commerce Recommendation Engine (MLOps Edition)
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi" alt="FastAPI">
-  <img src="https://img.shields.io/badge/Machine%20Learning-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="ML">
-  <img src="https://img.shields.io/badge/SVD-Matrix%20Factorization-success?style=for-the-badge" alt="SVD">
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/badge/Status-Production%20Ready-brightgreen?style=for-the-badge" alt="Status">
+  <img src="https://img.shields.io/badge/MLOps-Production%20Grade-blueviolet?style=for-the-badge&logo=kubernetes" alt="MLOps">
+  <img src="https://img.shields.io/badge/CI/CD-GitHub%20Actions-blue?style=for-the-badge&logo=github-actions" alt="CI/CD">
+  <img src="https://img.shields.io/badge/Serving-KServe-orange?style=for-the-badge&logo=kubernetes" alt="Serving">
+  <img src="https://img.shields.io/badge/GitOps-ArgoCD-red?style=for-the-badge&logo=argo" alt="GitOps">
 </p>
 
-### 🚀 An End-to-End AI-Powered Personalization System
-This project is a sophisticated **E-Commerce Recommendation Engine** designed to enhance user experience and drive sales through highly personalized product discovery. Leveraging advanced Collaborative Filtering and Matrix Factorization (SVD), the system predicts user preferences with high accuracy, addressing the "Cold Start" problem via popularity-based fallbacks.
+## 🎯 Project Overview
+This is a comprehensive, production-grade **MLOps platform** for an E-Commerce Recommendation Engine. It automates the entire lifecycle of a machine learning model, from synthetic data generation and hybrid model training to automated deployment on Kubernetes using KServe and ArgoCD.
 
 ---
 
-## 📺 Demo Preview
-
-> [!NOTE]
-> **Live Demo Coming Soon!** Currently, you can view the local deployment screenshots below.
-
-| **Personalized Feed** | **Analytics Dashboard** |
-| :---: | :---: |
-| ![Home](https://via.placeholder.com/400x250?text=Product+Recommendations+UI) | ![Dashboard](https://via.placeholder.com/400x250?text=ML+Performance+Dashboard) |
-
----
-
-## ✨ Key Features
-
-- 👤 **Personalized Recommendations**: Tailored product feeds for registered users using SVD.
-- 🔄 **Similar Product Discovery**: Item-item similarity based on category and browsing context.
-- 🔥 **Trending Products**: Real-time popularity-based suggestions for new/unauthenticated users.
-- 📈 **Performance Dashboard**: Visualized metrics including Hit Rate, CTR, and Revenue impact.
-- ⚡ **High-Performance API**: Built with **FastAPI** for asynchronous, sub-millisecond response times.
-- 📱 **Responsive UI**: Modern, glassmorphism-inspired design that works on all devices.
-- 🛠️ **Cold Start Handling**: Intelligent fallback to popularity models when user history is unavailable.
-
----
-
-## 🛠️ Tech Stack
-
-### **Frontend**
-- **Core**: HTML5, CSS3 (Modern Flexbox/Grid), JavaScript (ES6+)
-- **Styling**: Glassmorphism, CSS Variables, Responsive Design
-- **Visuals**: Lucide Icons, Google Fonts (Inter)
-
-### **Backend**
-- **Framework**: FastAPI (Python)
-- **Server**: Uvicorn (ASGI)
-- **Processing**: Pandas, NumPy, Scipy
-
-### **Machine Learning**
-- **Library**: Scikit-Learn
-- **Algorithms**: 
-  - **Matrix Factorization**: TruncatedSVD for latent factor discovery.
-  - **Collaborative Filtering**: Item-Item Cosine Similarity.
-  - **Baseline**: Popularity-based ranking.
-- **Evaluation**: Hit Rate @ K, RMSE.
-
-### **DevOps & Data**
-- **Storage**: CSV (Scalable to PostgreSQL/MongoDB)
-- **Serialization**: Pickle (Model Persistence)
-- **Version Control**: Git/GitHub
-
----
-
-## 🧠 Recommendation Algorithms
-
-The engine employs a hybrid strategy to ensure robust performance across different user states:
-
-### 1. Matrix Factorization (SVD)
-By decomposing the user-item interaction matrix into lower-dimensional latent factors, the system uncovers hidden patterns in user behavior. This allows it to suggest products a user might like even if they haven't interacted with that specific category before.
-
-### 2. Collaborative Filtering (Item-Item)
-Calculates **Cosine Similarity** between product vectors. If a user buys a "Laptop", the system identifies items frequently co-purchased or similar in characteristics (e.g., "Laptop Stand", "Wireless Mouse").
-
-### 3. Popularity-Based (Cold Start)
-For new visitors with zero history, the system serves globally trending products. This ensures the UI is never empty and maximizes the chance of the first conversion.
-
----
-
-## 🔄 Machine Learning Workflow
+## 🏗️ Architecture & Pipeline
 
 ```mermaid
-graph LR
-    A[Data Collection] --> B[Cleaning & Preprocessing]
-    B --> C[Feature Engineering]
-    C --> D[User-Item Matrix Construction]
-    D --> E[Model Training - SVD/CF]
-    E --> F[Hyperparameter Tuning]
-    F --> G[Model Evaluation - Hit Rate]
-    G --> H[Model Serialization]
-    H --> I[FastAPI Deployment]
+graph TD
+    A[Developer Push] --> B[GitHub Actions]
+    B --> C[Data Gen & Preprocessing]
+    C --> D[Hybrid Model Training]
+    D --> E[MLflow Tracking]
+    E --> F[Upload Model to AWS S3]
+    F --> G[Build & Push Docker to ECR]
+    G --> H[Update K8s Manifest]
+    H --> I[ArgoCD Sync]
+    I --> J[KServe Inference Service]
+    J --> K[FastAPI REST API]
+    K --> L[Prometheus/Grafana Monitoring]
 ```
 
-1. **Ingestion**: Raw interaction logs (clicks, views, purchases).
-2. **Matrix Construction**: Transforming logs into a sparse `user_item_matrix`.
-3. **Training**: Using `TruncatedSVD` to reduce dimensionality and capture 95% variance.
-4. **Validation**: Testing against a hold-out set using Hit Rate @ 10 metrics.
-5. **Serving**: Optimized inference via a RESTful API.
+### 🛠️ Key MLOps Components:
+- **CI/CD/CT**: GitHub Actions automates testing and training (Continuous Training).
+- **Model Registry**: AWS S3 stores versioned model artifacts (`.pkl`).
+- **Container Registry**: AWS ECR hosts production-ready Docker images.
+- **Inference**: **KServe** provides scalable, serverless-style model serving.
+- **GitOps**: **ArgoCD** ensures the Kubernetes cluster matches the Git repository state.
+- **Observability**: **Prometheus** scrapes custom metrics (latency, rec count) for **Grafana** visualization.
 
 ---
 
-## 📁 Folder Structure
+## 🚀 Getting Started
 
+### 1. Local Development
+```bash
+# Clone the repo
+git clone https://github.com/bittush8789/E-Commerce-Recommendation-Engine.git
+cd E-Commerce-Recommendation-Engine
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Generate 50k+ synthetic rows
+python generate_data.py
+
+# Train the hybrid model (SVD + XGBoost)
+python train.py
+
+# Start the API
+uvicorn app:app --reload
+```
+
+### 2. Docker Execution
+```bash
+docker build -t ecommerce-recommender .
+docker run -p 8000:8000 ecommerce-recommender
+```
+
+### 3. Kubernetes Deployment
+1. Configure AWS credentials as GitHub Secrets.
+2. Ensure KServe and ArgoCD are installed on your cluster.
+3. Apply the ArgoCD application manifest:
+   ```bash
+   kubectl apply -f argocd/application.yaml
+   ```
+
+---
+
+## 📂 File Structure
 ```text
 E-Commerce-Recommendation-Engine/
-│
-├── data/                   # Dataset storage (Raw & Processed)
-│   └── products.csv        # Product catalog
-│
-├── models/                 # Trained model binaries (.pkl)
-│   ├── best_model.pkl      # Serialized SVD/CF model
-│   └── metadata.pkl        # Training metadata & stats
-│
-├── src/                    # Core Logic
-│   └── recommender.py      # ML Model implementations
-│
-├── frontend/               # Web Interface
-│   ├── css/                # Custom Styles
-│   ├── js/                 # API integration logic
-│   └── *.html              # UI Pages (Home, Dashboard, etc.)
-│
-├── notebooks/              # R&D and EDA
-│   └── exploration.ipynb   # Data analysis & model testing
-│
-├── app.py                  # FastAPI Entry Point
-├── train.py                # Model training script
-├── requirements.txt        # Project dependencies
-└── README.md               # Professional Documentation
+│── .github/workflows/    # CI/CD/CT Pipelines
+│── app.py                # FastAPI Service & Prometheus Metrics
+│── train.py              # Hybrid Recommender Training (MLflow)
+│── generate_data.py      # Synthetic Data Engine (50k+ rows)
+│── requirements.txt      # Production Stack
+│── Dockerfile            # App Containerization
+│── k8s/                  # Kubernetes (KServe) Manifests
+│── argocd/               # GitOps Configuration
+│── monitoring/           # Prometheus/Grafana Configs
+│── templates/            # Glassmorphism UI (Frontend)
+│── static/               # Assets & Logic
+└── models/               # Local model cache
 ```
 
 ---
 
-## ⚙️ Installation & Setup
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/bittush8789/E-Commerce-Recommendation-Engine.git
-   cd E-Commerce-Recommendation-Engine
-   ```
-
-2. **Set Up Virtual Environment**
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # On Windows: venv\Scripts\activate
-   ```
-
-3. **Install Dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. **Train the Model (Optional)**
-   ```bash
-   python train.py
-   ```
-
-5. **Run the Application**
-   ```bash
-   python app.py
-   ```
-   *The API will be available at `http://localhost:8000`*
+## 🧠 Model Intelligence
+The system uses a **Hybrid Recommender Architecture**:
+1. **Collaborative Filtering**: SVD (Matrix Factorization) for deep user preference discovery.
+2. **Content-Based**: Category-level similarity for fallback.
+3. **Ranking**: **XGBoost Ranker** to fine-tune the final list based on price, rating, and engagement weights.
 
 ---
 
-## 🖥️ Usage Guide
-
-1. **Get Recommendations**: Enter a User ID on the home screen to see personalized picks.
-2. **Explore Similar**: Click on any product to see items related to it.
-3. **Trending Now**: Visit the "Trending" tab to see what's hot across the platform.
-4. **Analytics**: Access the `/dashboard.html` to view the engine's performance metrics.
-
----
-
-## 🖼️ Screenshots
-
-<p align="center">
-  <img src="docs/images/home.png" width="45%" alt="Home Page">
-  <img src="docs/images/recommendations.png" width="45%" alt="Recommendations Page">
-</p>
-
----
-
-## 🔮 Future Roadmap
-
-- [ ] **Deep Learning Integration**: Implementing Neural Collaborative Filtering (NCF).
-- [ ] **Vector Database**: Migrating to Pinecone/Milvus for faster similarity search.
-- [ ] **LLM Search**: Adding a semantic search bar powered by OpenAI/Llama 3.
-- [ ] **Real-time Pipeline**: Integrating Kafka for live interaction streaming.
-- [ ] **A/B Testing Framework**: Built-in support for model comparison in production.
-
----
-
-## 💼 Why This Project Matters (Resume Value)
-
-This project demonstrates a comprehensive mastery of the **Full-Stack AI Lifecycle**:
-- **Data Engineering**: Handling sparse matrices and large-scale data transformations.
-- **Applied ML**: Implementing production-grade recommendation algorithms (SVD, CF).
-- **Backend Architecture**: Designing scalable, asynchronous REST APIs with FastAPI.
-- **Frontend UX**: Creating data-driven UIs that communicate complex AI output simply.
-- **MLOps**: Automated training pipelines and model versioning.
+## 💼 Resume Value
+This project demonstrates expertise in:
+- **MLOps Engineering**: End-to-end automation of ML lifecycles.
+- **Infrastructure as Code**: Managing K8s/ArgoCD manifests.
+- **Full-Stack ML**: Building both the brain (ML models) and the body (FastAPI/Frontend).
+- **Cloud Native**: Leveraging AWS (S3, ECR) for scalable AI.
 
 ---
 
 ## 👨‍💻 Author
-
 **Bittu Sharma**
-- 🌍 **Portfolio**: [Your Portfolio Link]
-- 🐙 **GitHub**: [@bittush8789](https://github.com/bittush8789)
-- 💼 **LinkedIn**: [Your LinkedIn Profile]
+[GitHub](https://github.com/bittush8789)
 
 ---
-
-## 📜 License
-
-Distributed under the **MIT License**. See `LICENSE` for more information.
-
----
-<p align="center">Built with ❤️ for the AI Community</p>
+<p align="center">Empowering E-Commerce with Intelligence</p>
