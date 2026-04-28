@@ -99,10 +99,50 @@ The GitHub Action automatically updates the Kubernetes manifest:
 | :--- | :--- |
 | **Backend** | Python 3.11, FastAPI, Uvicorn |
 | **Machine Learning** | Scikit-learn, Surprise, XGBoost, LightFM, Pandas, NumPy |
-| **MLOps & DevOps** | GitHub Actions, Docker, Kubernetes, KServe, ArgoCD |
-| **Data & Tracking** | AWS S3, AWS ECR, MLflow, DVC |
+| **MLOps & DevOps** | GitHub Actions, Docker, **DVC**, **Kind (Kubernetes in Docker)**, KServe, ArgoCD |
+| **Data & Tracking** | AWS S3, AWS ECR, MLflow |
 | **Monitoring** | Prometheus, Grafana |
 | **Frontend** | HTML5, CSS3 (Glassmorphism), Vanilla JavaScript |
+
+---
+
+## 🏗️ Local MLOps Infrastructure (Kind + Docker)
+
+To mirror the production environment locally, we use **Kind (Kubernetes in Docker)**. This allows for testing KServe and ArgoCD manifests without a cloud provider.
+
+### **1. Setup Kind Cluster**
+```bash
+# Create a cluster with a custom config (if needed for ingress)
+kind create cluster --name mlops-cluster
+
+# Verify cluster is running
+kubectl cluster-info --context kind-mlops-cluster
+```
+
+### **2. Docker Integration**
+The application is fully containerized. To load your local image into Kind:
+```bash
+docker build -t ecommerce-recommender:latest .
+kind load docker-image ecommerce-recommender:latest --name mlops-cluster
+```
+
+---
+
+## 📦 Data Version Control (DVC)
+
+We use **DVC** to manage large datasets and model artifacts that shouldn't be stored directly in Git. This ensures that every version of our 50k+ row dataset is tracked and reproducible.
+
+### **Track Data Changes**
+```bash
+# Initialize DVC
+dvc init
+
+# Track the generated dataset
+dvc add data/interactions.csv
+
+# Push data to remote storage (S3/Local)
+dvc push
+```
 
 ---
 
