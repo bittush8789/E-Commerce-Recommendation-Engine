@@ -41,6 +41,46 @@ graph TD
 
 ---
 
+## ⚙️ Step-by-Step MLOps Execution
+
+This project implements a fully automated "Zero-Touch" MLOps workflow. Follow these steps to understand the execution flow:
+
+### **Step 1: Developer Interaction**
+The developer modifies the model code in `train.py` or pushes new features.
+```bash
+git add .
+git commit -m "feat: improve recommendation ranking with XGBoost"
+git push origin cicd
+```
+
+### **Step 2: Automated CI/CT Pipeline (GitHub Actions)**
+The push triggers the `.github/workflows/mlops-pipeline.yml` which performs:
+1.  **Environment Setup**: Installs dependencies from `requirements.txt`.
+2.  **Continuous Training (CT)**:
+    -   Runs `generate_data.py` to create a fresh 50k+ row dataset.
+    -   Runs `train.py` to retrain the Hybrid Recommender.
+3.  **Experiment Tracking**: Metrics (RMSE, Precision) are logged to **MLflow**.
+
+### **Step 3: Artifact & Image Management**
+1.  **Model Versioning**: The trained `model.pkl` is pushed to **AWS S3** with a path like `s3://bucket/models/model-<commit-sha>.pkl`.
+2.  **Containerization**: A new Docker image is built and pushed to **AWS ECR** tagged with the same `<commit-sha>`.
+
+### **Step 4: GitOps Manifest Update**
+The GitHub Action automatically updates the Kubernetes manifest:
+-   It uses `sed` to replace the `storageUri` in `k8s/inference.yaml` with the new S3 model path.
+-   It commits the updated manifest back to the repository.
+
+### **Step 5: Deployment & Serving (KServe + ArgoCD)**
+1.  **ArgoCD Sync**: ArgoCD detects the change in `k8s/inference.yaml` and synchronizes the state.
+2.  **KServe Inference**: KServe spins up a new **InferenceService** pod, pulling the model from S3 and the app from ECR.
+3.  **Real-time Serving**: The FastAPI application becomes live, serving recommendations via REST endpoints.
+
+### **Step 6: Monitoring (Prometheus & Grafana)**
+1.  **Scraping**: Prometheus scrapes the `/metrics` endpoint of the live service.
+2.  **Alerting & Visualization**: Grafana displays real-time dashboards for latency, recommendation counts, and model health.
+
+---
+
 ## ✨ Key Features
 
 - **🎯 Personalized Intelligence**: Hybrid recommender system using Matrix Factorization (SVD) and XGBoost Ranking.
